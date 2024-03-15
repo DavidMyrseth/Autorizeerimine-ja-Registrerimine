@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2ec445ef-0631-4d97-b96f-6c690652c246</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MyModule.py</StartupFile>
+    <StartupFile>main1.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

@@ -3,7 +3,7 @@ import smtplib, ssl
 smtp_server = "erik.gerega@gmail.com"
 port = 587
 sender_email = "david.mirsetSSS@gmail.com"
-password = input("")
+password = input("bcbj cata mbch ayzy")
 #Create a secure SSL context
 context = ssl.create_default_context()
 msg="Tere tulemast!"
