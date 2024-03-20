@@ -1,6 +1,6 @@
-﻿import random
+import random
 import string
-
+import smtplib, ssl
 
 def kasutajad_väljund(kasutajad, paroolid, valid):
     for i in range(5):
@@ -16,12 +16,14 @@ def registreerimine(kasutajad, paroolid, valid):
             paroolid.append(parool)
             valid.append(email)
             kasutajad.append(nimi)
+            sohranjaet(nimi, parool, email, "main.txt")
             print("Пользователь зарегистрирован!")
         else:
             parool = genereeri_parool()
             paroolid.append(parool)
             valid.append(email)
             kasutajad.append(nimi)
+            sohranjaet(nimi, parool, email, "main.txt")
             print("Пользователь зарегистрирован!")
             print("Новый пороль: ", parool)
 
@@ -49,3 +51,57 @@ def genereeri_parool(pikkus=8):
     parool = ''.join(random.choices(string.ascii_letters + string.digits, k=pikkus))
     return parool
 
+def sohranjaet(uus_user, uus_parool, uus_email, main):
+    save =f"{uus_user}_{uus_parool}:{uus_email}"
+    with open (main, "a") as s:
+        s.write(f"{save}\n")
+
+def tsitaetsodersimoefile (file, kasutajad, paroolid, valid):
+    with open(file, 'r') as s:
+        data = s.readlines()
+        if len(data):
+            for line in data:
+                name_password_and_email = line.strip().split(':')
+                email = name_password_and_email[1]
+                name_and_password = name_password_and_email[0].split("_")
+                name = name_and_password[0]
+                password = name_and_password[1]
+                kasutajad.append(name)
+                paroolid.append(password)
+                valid.append(email)
+
+def otsisjaetfile(main):
+    with open(main, "w") as s:
+        s.write("")
+
+def perezapisavaet(main, kasutajad, paroolid, valid):
+    otsisjaetfile(main)
+    for index,i in enumerate(kasutajad):
+        print(kasutajad, paroolid, valid)
+        sohranjaet(i, paroolid[index], valid[index], main)
+
+def send_password_email(to_email, parool):
+    from email.message import EmailMessage
+    smtp_server = "smtp.gmail.com"
+    port = 587
+    sender_email = "david.mirsetSSS@gmail.com"
+    password = "bcbj cata mbch ayzy"
+    context = ssl.create_default_context()
+    msg = EmailMessage()
+    msg.set_content(f"Your password is {parool}")
+    msg['Subject'] = "Your password!"
+    msg['From'] = sender_email
+    msg['To'] = to_email
+
+    try:
+        server = smtplib.SMTP(smtp_server, port)
+        server.ehlo()
+        server.starttls(context=context)
+        server.ehlo()
+        server.login(sender_email, password)
+        server.send_message(msg)
+
+    except Exception as e:
+        print(e)
+    finally:
+        server.quit()
