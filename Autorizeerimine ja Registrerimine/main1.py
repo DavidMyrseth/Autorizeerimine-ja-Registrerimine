@@ -1,7 +1,12 @@
-﻿from MyModule import *
-kasutajad = ["Nikita", "Edgar", "Sasha", "Artem", "Vsevolod"]
-valid = ["nikita228@tthk.ee", "edgarbaran22@tthk.ee", "sashakasha32@tthk.ee", "Artemsosa@tthk.ee", "vsevolod@tthk.ee"]
-paroolid = ["Secret123", "Password987", "Security456", "User321", "Protection789"]
+﻿import smtplib
+import ssl
+from email.message import EmailMessage
+from MyModule import *
+
+kasutajad = []
+valid = []
+paroolid = []
+tsitaetsodersimoefile("main.txt", kasutajad, paroolid, valid)
 while True:
     print("Valikud")
     print("1.Registreerimine")
@@ -10,6 +15,7 @@ while True:
     print("4.Unustasin parooli")
     print("5.Vaata lisatud kasutajaid")
     print("6.Lõpeta")
+    print("7.Email Sender")
     valik = input("Vali tegevus (1-6): ")
     if valik == "1":  # Регистрация
         registreerimine(kasutajad, paroolid, valid)
@@ -33,5 +39,13 @@ while True:
     elif valik == "6":  # Выход
         print("Программа завершает работу.")
         break
+    elif valik == "7":
+        K = input("Введите свой эмейл: ")
+        index1 = None
+        for index, L in enumerate(valid):
+            if L == K:
+                index1 = index
+                break
+        send_password_email (K,paroolid[index1])
     else:
         print("Неверный выбор. Пожалуйста, выберите снова.")
